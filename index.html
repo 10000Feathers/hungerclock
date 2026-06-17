@@ -97,67 +97,215 @@
       font-weight: 900;
       line-height: 0.96;
       letter-spacing: 0.012em;
-      text-align: center;      position: absolute;
-      inset: 0;
-      display: none;
-      width: 100%;
-      height: 100%;
-      object-fit: fill;
-      pointer-events: none;
-      user-select: none;
+      text-align: center;
+      text-transform: uppercase;
+      white-space: nowrap;
+      transform: translateX(-50%) scaleX(0.88);
+      transform-origin: center top;
     }
 
-    .frame.is-active {
+    #death-cover.is-active,
+    #death-name.is-active {
       display: block;
     }
 
-    #stage.is-final::before,
-    #stage.is-final::after {
-      content: "";
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      z-index: 4;
-      width: 5px;
-      background: black;
-      pointer-events: none;
-    }
-
-    #stage.is-final::before {
-      left: 0;
-    }
-
-    #stage.is-final::after {
-      right: 0;
-    }
-
-    #death-cover,
-    #death-name {
+    #count-number {
       position: absolute;
       display: none;
       pointer-events: none;
       user-select: none;
     }
 
-    #death-cover {
-      left: 18.6%;
-      top: 30.72%;
-      z-index: 2;
-      width: 55.8%;
-      height: 7.05%;
-      background: black;
+    #count-number {
+      left: 48.3%;
+      top: 28.65%;
+      z-index: 3;
+      width: 36%;
+      color: #ff6d00;
+      font-family: Impact, "Arial Black", "Helvetica Neue", Arial, sans-serif;
+      font-size: clamp(4.15rem, 9.15vw, 6.18rem);
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: 0;
+      text-align: center;
+      transform: translateX(-50%);
+      transform-origin: center top;
     }
 
-    #death-name {
-      left: 48.6%;
-      top: 31.65%;
-      z-index: 3;
-      width: 50%;
-      padding: 0;
-      color: white;
-      font-family: "HelveticaNeue-CondensedBlack", "Helvetica Neue Condensed Black", "Arial Narrow", Impact, "Arial Black", sans-serif;
-      font-size: clamp(1.65rem, 3.6vw, 2.43rem);
-      font-weight: 900;
-      line-height: 0.96;
-      letter-spacing: 0.012em;
-      text-align: center;
+    #count-number.is-one-digit {
+      transform: translateX(-50%);
+    }
+
+    #count-number.is-two-digits {
+      font-size: clamp(4.15rem, 9.15vw, 6.18rem);
+    }
+
+    #count-number.is-active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <main id="stage" aria-label="Every four seconds, one person dies from hunger.">
+    <img class="frame is-active" src="AG-number-base.png" alt="">
+    <img class="frame" src="AG-05.png" alt="">
+    <img class="frame" src="AG-06.png" alt="">
+    <img class="frame" src="AG-07.png" alt="">
+    <div id="count-number">1</div>
+    <div id="death-cover"></div>
+    <div id="death-name">ABENA DIED</div>
+  </main>
+
+  <script>
+    const names = [
+      "Abdi",
+      "Abdul",
+      "Abena",
+      "Abiodun",
+      "Acha",
+      "Adama",
+      "Aden",
+      "Afiya",
+      "Aisha",
+      "Alem",
+      "Ali",
+      "Amina",
+      "Amira",
+      "Amadou",
+      "Anisa",
+      "Asha",
+      "Ayana",
+      "Aziza",
+      "Bashir",
+      "Binta",
+      "Biruk",
+      "Chipo",
+      "Dahir",
+      "Dawit",
+      "Deka",
+      "Desta",
+      "Dina",
+      "Eden",
+      "Elias",
+      "Fadumo",
+      "Farah",
+      "Fatima",
+      "Fatou",
+      "Filsan",
+      "Habiba",
+      "Hadiya",
+      "Hafsa",
+      "Halima",
+      "Hamdi",
+      "Hana",
+      "Hassan",
+      "Hawa",
+      "Hodan",
+      "Ibrahim",
+      "Idrissa",
+      "Ikram",
+      "Iman",
+      "Ismail",
+      "Jabari",
+      "Kadija",
+      "Kadiatu",
+      "Khadra",
+      "Kofi",
+      "Ladan",
+      "Laila",
+      "Latifa",
+      "Layla",
+      "Leila",
+      "Lulit",
+      "Mahdi",
+      "Mariam",
+      "Maryam",
+      "Mekdes",
+      "Moussa",
+      "Nabil",
+      "Nadia",
+      "Nasra",
+      "Nour",
+      "Omar",
+      "Oumar",
+      "Rahma",
+      "Rashid",
+      "Roda",
+      "Saadia",
+      "Saba",
+      "Safia",
+      "Safiya",
+      "Salif",
+      "Samira",
+      "Sana",
+      "Selam",
+      "Seydou",
+      "Shukri",
+      "Sira",
+      "Siti",
+      "Sofia",
+      "Soraya",
+      "Tahira",
+      "Tariq",
+      "Tesfaye",
+      "Yared",
+      "Yasmin",
+      "Yonas",
+      "Yusuf",
+      "Zahra",
+      "Zainab",
+      "Zakaria",
+      "Zara",
+      "Zeinab"
+    ]
+    const frames = Array.from(document.querySelectorAll(".frame"))
+    const stage = document.querySelector("#stage")
+    const countNumber = document.querySelector("#count-number")
+    const deathCover = document.querySelector("#death-cover")
+    const deathName = document.querySelector("#death-name")
+    const startedAt = performance.now()
+    let activeSecond = 0
+
+    function pickName() {
+      const index = Math.floor(Math.random() * names.length)
+      const selectedName = names[index]
+      deathName.textContent = `${selectedName} DIED`
+    }
+
+    function showFrame(secondNumber) {
+      const isDeathFrame = secondNumber % 4 === 0
+      const visualFrame = isDeathFrame ? 3 : 0
+
+      frames.forEach((frame, frameIndex) => {
+        frame.classList.toggle("is-active", frameIndex === visualFrame)
+      })
+      countNumber.classList.toggle("is-active", !isDeathFrame)
+      deathCover.classList.toggle("is-active", isDeathFrame)
+      deathName.classList.toggle("is-active", isDeathFrame)
+      stage.classList.toggle("is-final", isDeathFrame)
+
+      if (!isDeathFrame) {
+        countNumber.textContent = String(secondNumber)
+        countNumber.classList.toggle("is-one-digit", secondNumber < 10)
+        countNumber.classList.toggle("is-two-digits", secondNumber > 9)
+      } else {
+        pickName()
+      }
+    }
+
+    function updateClock() {
+      const elapsedSeconds = Math.floor((performance.now() - startedAt) / 1000)
+      const secondNumber = (elapsedSeconds % 60) + 1
+
+      if (secondNumber !== activeSecond) {
+        showFrame(secondNumber)
+        activeSecond = secondNumber
+      }
+
+      window.requestAnimationFrame(updateClock)
+    }
+
+    window.requestAnimationFrame(updateClock)
+  </script>
+</body>
+</html>
