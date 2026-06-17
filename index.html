@@ -97,4 +97,67 @@
       font-weight: 900;
       line-height: 0.96;
       letter-spacing: 0.012em;
+      text-align: center;      position: absolute;
+      inset: 0;
+      display: none;
+      width: 100%;
+      height: 100%;
+      object-fit: fill;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .frame.is-active {
+      display: block;
+    }
+
+    #stage.is-final::before,
+    #stage.is-final::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      z-index: 4;
+      width: 5px;
+      background: black;
+      pointer-events: none;
+    }
+
+    #stage.is-final::before {
+      left: 0;
+    }
+
+    #stage.is-final::after {
+      right: 0;
+    }
+
+    #death-cover,
+    #death-name {
+      position: absolute;
+      display: none;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    #death-cover {
+      left: 18.6%;
+      top: 30.72%;
+      z-index: 2;
+      width: 55.8%;
+      height: 7.05%;
+      background: black;
+    }
+
+    #death-name {
+      left: 48.6%;
+      top: 31.65%;
+      z-index: 3;
+      width: 50%;
+      padding: 0;
+      color: white;
+      font-family: "HelveticaNeue-CondensedBlack", "Helvetica Neue Condensed Black", "Arial Narrow", Impact, "Arial Black", sans-serif;
+      font-size: clamp(1.65rem, 3.6vw, 2.43rem);
+      font-weight: 900;
+      line-height: 0.96;
+      letter-spacing: 0.012em;
       text-align: center;
